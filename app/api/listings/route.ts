@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 
+import prisma from "@/app/libs/prismadb";
+
 export async function POST(
    request: Request
 ) {
@@ -20,8 +22,9 @@ export async function POST(
          imageSrc,
          category,
          duration,
-         price
+         price: parseInt(price, 10)
       }
    });
-}
 
+   return NextResponse.json(listing);
+}

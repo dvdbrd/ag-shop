@@ -1,11 +1,12 @@
 'use client';
 
-import React from 'react';
-import { useRouter } from 'next/navigation';
-import { Listing } from '@/src/types';
+import { Listing } from "@prisma/client";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import Button from "../Button";
 
 interface ListingCardProps {
-  data: Listing; // Array of Listing objects
+  data: Listing;
   onAction?: (id: string) => void;
   disabled?: boolean;
   actionLabel?: string;
@@ -21,20 +22,30 @@ const ListingCard: React.FC<ListingCardProps> = ({
 }) => {
   const router = useRouter();
 
-  const handleClick = (listingId: string) => {
-    // Handle navigation to the listing details page using the provided listingId
-    router.push(`/tours/${listingId}`);
-  };
+  return ( 
+    <div onClick={() => router.push(`/tours/${data.title}`)} className="col-span-1 cursor-pointer group">
+      <div className="flex flex-col gap-2 w-full">
+        <div className="aspect-square w-full relative overflow-hidden rounded-xl">
+          <Image fill alt="Listing" src={data.imageSrc} className="object-cover h-full w-full group-hover:scale-110 transition" />
+        </div>
+        <div className="font-semibold text-lg">
+          {data.title}
+        </div>
+        <div className="font-light text-neutral-500">
+          {data.category}
+        </div>
+        <div className="flex flex-row items-center gap-1">
+          <div className="font-semibold">
+            ${data.price}
+          </div>
+          <div className="font-light">
+            /person
+          </div>
+        </div>
 
-  return (
-    <div className="col-span-1 cursor-pointer group">
-      <h2>{data.title}</h2>
-      <p>{data.description}</p>
-      <img src={data.imageSrc} alt={data.title} />
-      <p>Category: {data.category}</p>
-      <p>Price: ${data.price}</p>
+      </div>
     </div>
-  );
-};
-
+   );
+}
+ 
 export default ListingCard;
